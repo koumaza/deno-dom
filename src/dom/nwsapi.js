@@ -385,13 +385,12 @@ function Factory(global, Export) {
       } else {
         // DOCUMENT_FRAGMENT_NODE (11)
         if ((e = context.firstElementChild)) {
-          tag = tag.toLowerCase();
-          if (!(e.nextElementSibling || tag == '*' || e.nodeName.toLowerCase() == tag)) {
+          if (!(e.nextElementSibling || tag == '*' || e.nodeName == tag)) {
             return slice.call(e[api]('*', tag));
           } else {
             nodes = [ ];
             do {
-              if (tag == '*' || e.nodeName.toLowerCase() == tag) nodes[nodes.length] = e;
+              if (tag == '*' || e.nodeName == tag) nodes[nodes.length] = e;
               concatList(nodes, e[api]('*', tag));
             } while ((e = e.nextElementSibling));
           }
@@ -821,7 +820,7 @@ function Factory(global, Export) {
             match = selector.match(Patterns.tagName);
             source = 'if(' + N + '(e.nodeName' +
               (Config.MIXEDCASE || hasMixedCaseTagNames(doc) ?
-                '.toLowerCase()=="' + match[1].toLowerCase() + '"' :
+                match[1] + '"' :
                 '=="' + match[1].toUpperCase() + '"') +
               ')){' + source + '}';
             break;
