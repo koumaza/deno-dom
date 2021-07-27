@@ -166,7 +166,7 @@ export class Element extends Node {
     let out = "<" + tagName;
 
     for (const attribute of this.getAttributeNames()) {
-      out += ` ${ attribute.toLowerCase() }`;
+      out += ` ${ attribute }`;
 
       // escaping: https://html.spec.whatwg.org/multipage/parsing.html#escapingString
       if (attributes[attribute] != null) {
