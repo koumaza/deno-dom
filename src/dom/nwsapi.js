@@ -385,12 +385,13 @@ function Factory(global, Export) {
       } else {
         // DOCUMENT_FRAGMENT_NODE (11)
         if ((e = context.firstElementChild)) {
-          if (!(e.nextElementSibling || tag == '*' || e.nodeName == tag)) {
+          tag = tag.toLowerCase();
+          if (!(e.nextElementSibling || tag == '*' || e.nodeName.toLowerCase() == tag)) {
             return slice.call(e[api]('*', tag));
           } else {
             nodes = [ ];
             do {
-              if (tag == '*' || e.nodeName == tag) nodes[nodes.length] = e;
+              if (tag == '*' || e.nodeName.toLowerCase() == tag) nodes[nodes.length] = e;
               concatList(nodes, e[api]('*', tag));
             } while ((e = e.nextElementSibling));
           }
@@ -820,7 +821,7 @@ function Factory(global, Export) {
             match = selector.match(Patterns.tagName);
             source = 'if(' + N + '(e.nodeName' +
               (Config.MIXEDCASE || hasMixedCaseTagNames(doc) ?
-                match[1] + '"' :
+                '.toLowerCase()=="' + match[1].toLowerCase() + '"' :
                 '=="' + match[1].toUpperCase() + '"') +
               ')){' + source + '}';
             break;
@@ -862,7 +863,7 @@ function Factory(global, Export) {
             } else if (match[4]) {
               match[4] = convertEscapes(match[4]).replace(REX.RegExpChar, '\\$&');
             }
-            type = match[5] == 'i' || (HTML_DOCUMENT && HTML_TABLE[expr]) ? 'i' : '';
+            type = match[5] == 'i' || (HTML_DOCUMENT && HTML_TABLE[expr.toLowerCase()]) ? 'i' : '';
             source = 'if(' + N + '(' +
               (!match[2] ? (NS ? 's.hasAttributeNS(e,"' + name + '")' : 'e.hasAttribute("' + name + '")') :
               !match[4] && ATTR_STD_OPS[match[2]] && match[2] != '~=' ? 'e.getAttribute("' + name + '")==""' :
